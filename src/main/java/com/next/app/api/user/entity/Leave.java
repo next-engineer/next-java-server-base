@@ -14,7 +14,7 @@ public class Leave {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 여기만 수정: leaveId → id
+    private Long leaveId;  // ← 여기 다시 leaveId로 변경
 
     @Column(nullable = false)
     private Long employeeId;
