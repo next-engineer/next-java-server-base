@@ -32,6 +32,9 @@ public class PaymentsService {
             throw new RuntimeException("Alert: amount cannot be negative.");
         }
 
+
+        log.info("Creating payment: " + payment.getAmount());
+
         return paymentsReopsitory.save(payment);
     }
 
@@ -45,6 +48,8 @@ public class PaymentsService {
         payment.setClientId(updatePayment.getClientId());
         payment.setAmount(updatePayment.getAmount());
         payment.setMethod(updatePayment.getMethod());
+
+        log.info("Updating payment: " + payment.getAmount());
 
         return paymentsReopsitory.save(payment);
     }
