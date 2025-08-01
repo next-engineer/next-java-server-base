@@ -38,7 +38,7 @@ public class PaymentsService {
         payment.setAmount(updatePayment.getAmount());
         payment.setMethod(updatePayment.getMethod());
 
-        return paymentsReopsitory.save(payment)
+        return paymentsReopsitory.save(payment);
     }
 
     // Delete Payment
