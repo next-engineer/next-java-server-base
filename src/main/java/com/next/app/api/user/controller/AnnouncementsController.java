@@ -41,7 +41,13 @@ public class AnnouncementsController {
     public Announcements createAnnouncements(@RequestBody Announcements announcements) {
         return annoucementsService.createAnnouncements(announcements);
     }
-    
+
+   /* @PutMapping("/{announcement_id}")
+    @Transactional(readOnly = true)
+    @Operation(summary = "공지사항 수정", description = "현재 공지사항은 게시 후 수정이 불가능합니다.")
+    public Announcements updateAnnouncements(@PathVariable Long announcement_id, @RequestBody Announcements announcements) {
+        return annoucementsService.updateAnnouncements(announcement_id, announcements);
+    }*/
 
     @PutMapping("/{announcement_id}")
     @ResponseStatus(HttpStatus.BAD_REQUEST)
