@@ -27,12 +27,20 @@ public class PaymentsService {
     }
 
     // Create Payment
-    public Payments createPayment(Payments payments) {
-        return paymentsReopsitory.save(payments);
+    public Payments createPayment(Payments payment) {
+        if(payment.validateAmount(payment.getAmount()) < 0) {
+            throw new RuntimeException("Alert: amount cannot be negative.");
+        }
+
+        return paymentsReopsitory.save(payment);
     }
 
     // Edit Payment
     public Payments updatePayment(int id, Payments updatePayment) {
+        if(updatePayment.validateAmount(updatePayment.getAmount()) < 0) {
+            throw new RuntimeException("Alert: amount cannot be negative.");
+        }
+
         Payments payment = getPaymentById(id);
         payment.setClientId(updatePayment.getClientId());
         payment.setAmount(updatePayment.getAmount());
