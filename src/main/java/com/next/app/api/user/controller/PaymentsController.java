@@ -29,8 +29,8 @@ public class PaymentsController {
 
     @GetMapping("/{payment_id}")
     @Operation(summary = "Find Payment", description = "Find payment by payment_id.")
-    public Payments getPaymentById(@PathVariable int id) {
-        return paymentsService.getPaymentById(id);
+    public Payments getPaymentById(@PathVariable int payment_id) {
+        return paymentsService.getPaymentById(payment_id);
     }
 
     @PostMapping
@@ -41,14 +41,14 @@ public class PaymentsController {
 
     @PutMapping("/{payment_id}")
     @Operation(summary = "Update Payment", description = "Update current payment information.")
-    public Payments updatePayment(@PathVariable int paymentId, @RequestBody Payments payment) {
-        return paymentsService.updatePayment(paymentId, payment);
+    public Payments updatePayment(@PathVariable int payment_id, @RequestBody Payments payment) {
+        return paymentsService.updatePayment(payment_id, payment);
     }
 
     @DeleteMapping("/{payment_id}")
     @Operation(summary = "Delete Payment", description = "Delete current payment information.")
-    public void deletePayment(@PathVariable int paymentId) {
-        paymentsService.deletePayment(paymentId);
+    public void deletePayment(@PathVariable int payment_id) {
+        paymentsService.deletePayment(payment_id);
     }
 
 }
