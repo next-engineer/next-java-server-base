@@ -1,39 +1,42 @@
 package com.next.app.api.user.service;
 
-import com.next.app.api.user.dto.LeaveRequestDTO;
-import com.next.app.api.user.dto.LeaveResponseDTO;
 import com.next.app.api.user.entity.Leave;
-import com.next.app.exception.BusinessException;
-import com.next.app.exception.ErrorCode;
 import com.next.app.api.user.repository.LeaveRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
 @Service
-@RequiredArgsConstructor
 public class LeaveService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LeaveService.class);
 
     private final LeaveRepository leaveRepository;
 
-    public LeaveResponseDTO requestLeave(LeaveRequestDTO dto) {
-        Leave leave = Leave.builder()
-                .employeeId(dto.getEmployeeId())
-                .leaveType(dto.getLeaveType())
-                .startDate(dto.getStartDate())
-                .endDate(dto.getEndDate())
-                .status(Leave.LeaveStatus.REQUESTED)  // 대문자 REQUESTED로 변경
-                .reason(dto.getReason())
-                .build();
+    public LeaveService(LeaveRepository leaveRepository) {
+        this.leaveRepository = leaveRepository;
+    }
 
-        if (leave.isExceedingMaxDuration()) {
-            log.warn("휴가 신청이 15일을 초과했습니다. employeeId={}, start={}, end={}",
-                    dto.getEmployeeId(), dto.getStartDate(), dto.getEndDate());
-            throw new BusinessException(ErrorCode.LEAVE_DURATION_EXCEEDED);
+    public List<Leave> getAllLeaves() {
+        logger.info("Fetching all leave records...");
+        return leaveRepository.findAll();
+    }
+
+    public Leave createLeave(Leave leave) {
+        logger.info("Creating leave for employeeId={} from {} to {}",
+                leave.getEmployeeId(), leave.getStartDate(), leave.getEndDate());
+
+        long days = ChronoUnit.DAYS.between(leave.getStartDate(), leave.getEndDate()) + 1;
+        if (days > 15) {
+            logger.warn("Leave duration exceeds 15 days: {} days", days);
+            throw new IllegalArgumentException("휴가는 최대 15일까지만 가능합니다.");
         }
 
         Leave saved = leaveRepository.save(leave);
-        return LeaveResponseDTO.fromEntity(saved);
+        logger.info("Leave created with ID: {}", saved.getLeaveId());
+        return saved;
     }
 }

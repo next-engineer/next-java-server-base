@@ -1,22 +1,28 @@
 package com.next.app.api.user.controller;
 
-import com.next.app.api.user.dto.LeaveRequestDTO;
-import com.next.app.api.user.dto.LeaveResponseDTO;
+import com.next.app.api.user.entity.Leave;
 import com.next.app.api.user.service.LeaveService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/leaves")
-@RequiredArgsConstructor
 public class LeaveController {
 
     private final LeaveService leaveService;
 
+    public LeaveController(LeaveService leaveService) {
+        this.leaveService = leaveService;
+    }
+
+    @GetMapping
+    public List<Leave> getAllLeaves() {
+        return leaveService.getAllLeaves();
+    }
+
     @PostMapping
-    public ResponseEntity<LeaveResponseDTO> requestLeave(@RequestBody LeaveRequestDTO dto) {
-        LeaveResponseDTO response = leaveService.requestLeave(dto);
-        return ResponseEntity.ok(response);
+    public Leave createLeave(@RequestBody Leave leave) {
+        return leaveService.createLeave(leave);
     }
 }
