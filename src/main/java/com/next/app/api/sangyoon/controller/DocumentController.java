@@ -62,8 +62,8 @@ public class DocumentController {
             @ApiResponse(responseCode = "400", description = "경로 중복", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "기타오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public Document createDocument(@RequestBody Document document) {
-        return documentService.createDocument(document);
+    public ResponseEntity<Document> createDocument(@RequestBody Document document) {
+        return ResponseEntity.ok(documentService.createDocument(document));
     }
 
     @PutMapping
@@ -74,8 +74,8 @@ public class DocumentController {
             @ApiResponse(responseCode = "404", description = "문서 없음", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "기타오류", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public Document updateDocument(@RequestBody Document document) {
-        return documentService.updateDocument(document);
+    public ResponseEntity<Document> updateDocument(@RequestBody Document document) {
+        return ResponseEntity.ok(documentService.updateDocument(document));
     }
 
     @DeleteMapping("/{docId}")
