@@ -28,6 +28,8 @@ public class Payments {
     @Column(name = "paid_at")
     private java.time.LocalDateTime paidAt;
 
+    @PrePersist
+    @PreUpdate
     public int validateAmount(BigDecimal amount) {
         return amount.compareTo(BigDecimal.ZERO);
     }
